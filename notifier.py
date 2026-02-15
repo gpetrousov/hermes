@@ -13,8 +13,40 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 EMAIL_RECEIVER = os.environ.get("EMAIL_RECEIVER")
 
 
-def send_email(subject, body):
-    msg = MIMEText(body, "html")
+def send_email(subject, items):
+    # list_items will now be a list of dicts with 'title', 'date', and 'link'
+    formatted_items = ""
+    for item in items:
+        formatted_items += f"""
+        <li style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; list-style: none;">
+            <strong style="font-size: 1.1em; color: #003366;">{item['title']}</strong><br>
+            <span style="color: #666; font-size: 0.9em;">📅 {item['date']}</span><br>
+            <a href="{item['link']}" style="color: #3498db; text-decoration: none; font-size: 0.9em;">Read announcement →</a>
+        </li>
+        """
+
+    html_body = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                <h2 style="color: #003366; text-align: center; border-bottom: 2px solid #003366; padding-bottom: 10px;">
+                    MSc AI Announcements
+                </h2>
+                <ul style="padding-left: 0;">
+                    {formatted_items}
+                </ul>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="{URL}" style="background-color: #003366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                        Open All Announcements
+                    </a>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    print(html_body)
+
+    msg = MIMEText(html_body, "html")
     msg["Subject"] = subject
     msg["From"] = EMAIL_SENDER
     msg["To"] = EMAIL_RECEIVER
