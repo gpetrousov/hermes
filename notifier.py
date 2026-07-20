@@ -89,7 +89,7 @@ def scrape():
         })
 
     # Sort announcements by date  - https://stackoverflow.com/a/652347
-    announcements_data.sort(key=lambda item:item["date"], reverse=True)
+    announcements_data.sort(key=lambda item:item["date"], reverse=False)
 
     # Use the unique link of the first announcement to check for changes
     latest_id = announcements_data[0]["link"]
